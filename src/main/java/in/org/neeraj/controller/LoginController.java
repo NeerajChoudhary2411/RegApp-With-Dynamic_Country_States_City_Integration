@@ -24,13 +24,10 @@ public class LoginController {
 	
 	@PostMapping("/signincheck")
 	public String signInToUserAccount(Model model,@ModelAttribute Login login) {
-		System.out.println("Email"+login.getEmail());
-		System.out.println("Password : "+login.getPassword());
 		String lvnPage="";
 		String verifiedLogin = iUserRegService.userLoginCheck(login.getEmail(), login.getPassword());
-		System.out.println("Verified login :"+verifiedLogin);
 		if(verifiedLogin.equals("Valid")) {
-			model.addAttribute("message", "Welcome to KirArun Infotech Ltd.)");
+			model.addAttribute("message", "Welcome to KirArun Infotech Ltd.");
 			lvnPage="WelcomePage";
 		}
 		else {

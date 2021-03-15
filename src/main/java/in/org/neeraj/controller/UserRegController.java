@@ -68,7 +68,6 @@ public class UserRegController {
 	public String validateEmail(@RequestParam String email) {
 		String message = "";
 		if (iUserRegService.isEmailExist(email)) {
-			System.out.println("EMAIL :"+iUserRegService.isEmailExist(email));
 			message = "'" + email + "' already exist!";
 		}
 		return message;
