@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+<title></title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<style>
+</style>
+</head>
+<body class="container">
+	<div class="card">
+		<div class="card-header bg-info text-white text-center">
+			<h3>UNLOCK ACCOUNT</h3>
+		</div>
+		<div class="card-body">
+			<form th:action="@{/unlockaccount/unlockacc}" method="POST">
+				<div class="row">
+					<div class="col-3">
+						<label for="email">Email</label>
+					</div>
+					<div class="col-4">
+						<input type="text" name="emailId" id="emailId" class="form-control">
+					</div>
+					<div class="col-5">
+						<span id="emailError"></span>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-3">
+						<label for="tempPwd">Temporary Password</label>
+					</div>
+					<div class="col-4">
+						<input type="password" name="tempPwd" id="tempPwd" class="form-control">
+					</div>
+					<div class="col-5">
+						<span id="tempPwdError"></span>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col-3">
+						<label for="newPwd">Choose New Password</label>
+					</div>
+					<div class="col-4">
+						<input type="password" name="newPwd" id="newPwd" class="form-control">
+					</div>
+					<div class="col-5">
+						<span id="newPwdError"></span>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col-3">
+						<label for="confirmPwd">Confirm Password</label>
+					</div>
+					<div class="col-4">
+						<input type="password" name="confirmPwd" id="confirmPwd" class="form-control">
+					</div>
+					<div class="col-5">
+						<span id="confirmPwdError"></span>
+					</div>
+				</div>
+				<button type="submit" class="btn btn-secondary">Submit</button>
+				<a th:href="@{/login/show}" class="btn btn-primary">Login</a>
+		</form>
+		</div>
+		<div class="card-footer alert alert-secondary text-danger" th:if="${message!=null}">
+			<span th:text="${message}"></span>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/project6amashok
+    username: root
+    password: root
+      jpa:    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:      ddl-auto: update
+        mail:    host: smtp.gmail.com
+    port: 587
+    username: neerajchoudharygu235@gmail.com
+    password: SaiBaba@1993
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+    

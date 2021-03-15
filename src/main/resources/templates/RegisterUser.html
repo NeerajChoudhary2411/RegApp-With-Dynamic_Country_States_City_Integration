@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+<title>Reg Form</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+</style>
+</head>
+<body class="container">
+	<div class="card">
+		<div class="card-header bg-info text-white text-center">
+			<h3>Registration Form</h3>
+		</div>
+		<div class="card-body">
+			<form id="userRegForm" th:action="@{/user/save}" method="POST" th:object="${userAccount}">
+				<div class="row">
+					<div class="col-3">
+						<label for="firstName">First Name</label>
+					</div>
+					<div class="col-4">
+						<input type="text" name="firstName" id="firstName"
+							class="form-control">
+					</div>
+					<div class="col-5">
+						<span id="errorfirstName"></span>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-3">
+						<label for="lastName">Last Name</label>
+					</div>
+					<div class="col-4">
+						<input type="text" name="lastName" id="lastName"
+							class="form-control">
+					</div>
+					<div class="col-5">
+						<span id="errorlastName"></span>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-3">
+						<label for="email">Email</label>
+					</div>
+					<div class="col-4">
+						<input type="text" name="email" id="email" class="form-control">
+					</div>
+					<div class="col-5">
+						<span id="erroremail" class="fa fa-exclamation-circle"></span>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-3">
+						<label for="phNo">Phone No.</label>
+					</div>
+					<div class="col-4">
+						<input type="text" name="phNo" id="phNo" class="form-control">
+					</div>
+					<div class="col-5">
+						<span id="errorphNo"></span>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-3">
+						<label for="dob">DOB</label>
+					</div>
+					<div class="col-4">
+						<input type="date" name="dob" id="dob" class="form-control">
+					</div>
+					<div class="col-5">
+						<span id="errordob"></span>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-3">
+						<label for="gender">Gender</label>
+					</div>
+					<div class="col-4">
+						<input type="radio" name="gender" value="Male"> Male <input
+							type="radio" name="gender" value="Fe-Male"> Fe-Male
+					</div>
+					<div class="col-5">
+						<span id="errorgender"></span>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-3">
+						<label for="">Country</label>
+					</div>
+					<div class="col-4">
+						<select name="country" id="country" class="form-control">
+							<option value="">-SELECT-</option>
+							<option th:each="ob:${countries}" th:text="${ob[1]}"
+								th:value="${ob[0]}"></option>
+						</select>
+					</div>
+					<div class="col-5">
+						<span id="countryError" class="fa fa-exclamation-circle"> </span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-3">
+						<label for="">State</label>
+					</div>
+					<div class="col-4">
+						<select name="state" id="state" class="form-control">
+							<option value="">-SELECT-</option>
+
+						</select>
+					</div>
+					<div class="col-5">
+						<span id="stateError"></span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-3">
+						<label for="">City</label>
+					</div>
+					<div class="col-4">
+						<select name="city" id="city" class="form-control">
+							<option value="">-SELECT-</option>
+						</select>
+					</div>
+					<div class="col-5">
+						<span id="cityError"></span>
+					</div>
+				</div>
+				<div>
+					<span><button type="reset" class="btn btn-primary">
+							Reset</button></span> <span><button type="submit"
+							class="btn btn-secondary">Submit</button></span>
+				</div>
+			</form>
+		</div>
+		<div class="card-footer"></div>
+	</div>
+
+	<script>
+		//hide error section
+		$("#erroremail").hide();
+		$("#countryError").hide();
+		$("#stateError").hide();
+
+		//define error variable
+		erroremail = false;
+		countryError = false;
+		stateError = false;
+
+		//define validate function
+		function validate_email() {
+			var email = $("#email").val();
+			if (email == '') {
+				$("#erroremail").show();
+				$("#erroremail").html("Email <b>cannot be empty</b>");
+				$("#erroremail").css("color", "red");
+				erroremail = false;
+			}
+			else 
+			{
+				$("#erroremail").hide();
+				erroremail = true;
+				$.ajax({
+					url : 'validateemail',
+					data : {
+						"email" : email
+					},
+					success : function(txtResp) {
+						if (txtResp != "") {
+							$("#erroremail").show();
+							$("#erroremail").html(txtResp);
+							$("#erroremail").css("color", "red");
+							erroremail = false;
+						} else {
+							$("#erroremail").hide();
+							erroremail = true;
+						}
+					}
+				});
+
+			}
+
+			return erroremail;
+		}
+
+		function validate_country() {
+			var country = $("#country").val();
+			var s = '<option value=' + -1 + '>SELECT</option>';
+			if (country == '') {
+				$("#countryError").show();
+				$("#countryError").html("Please, <b>select one option</b>");
+				$("#countryError").css("color", "red");
+				countryError = false;
+			}
+
+			else
+				$("#countryError").hide();
+			countryError = true;
+			{
+				$.ajax({
+					url : 'states',
+					data : {
+						"countryId" : country
+					},
+					success : function(result) {
+						var result = JSON.parse(result);
+						for (var i = 0; i < result.length; i++) {
+							s += '<option value="' + result[i][0] + '">' + result[i][1] + '</option>';
+						}
+						$('#state').html(s);
+					}
+				});
+			}
+			//reset data
+			$('#state').html(s);
+			$('#city').html(s);
+
+			return countryError;
+		}
+
+		function validate_state() {
+			var state = $("#state").val();
+			var s = '<option value='+ -1 +'>-SELECT-</option>';
+			if (state == '') {
+				$("#stateError").show();
+				$("#stateError").html("Please, <b>select one option</b>");
+				$("#stateError").css("color", "red");
+				stateError = false;
+			} else {
+				$("#stateError").hide();
+				stateError = true;
+				$.ajax({
+					url : 'cities',
+					data : {
+						'stateId' : state
+					},
+					success : function(result) {
+						var result = JSON.parse(result);
+						for (var i = 0; i < result.length; i++) {
+							s += '<option value="'+ result[i][0]+'">' + result[i][1] + '</option>';
+						}
+						$("#city").html(s);
+					}
+				});
+			}
+			$("#city").html(s);
+			return stateError;
+		}
+
+		//link event
+		$("#email").keyup(function() {
+			validate_email();
+		});
+
+		$("#state").change(function() {
+			validate_state();
+		});
+
+		$("#country").change(function() {
+			validate_country();
+		});
+
+		//onclick submit
+		$("#userRegForm").submit(function() {
+			validate_email();
+			validate_country();
+			if (erroremail && countryError) {
+				return true;
+			} else {
+				return false;
+			}
+		});
+	</script>
+</body>
+</html>
