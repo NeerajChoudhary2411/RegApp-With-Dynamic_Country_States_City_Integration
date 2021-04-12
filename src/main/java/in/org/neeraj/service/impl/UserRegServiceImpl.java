@@ -1,5 +1,8 @@
 package in.org.neeraj.service.impl;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -44,14 +47,34 @@ public class UserRegServiceImpl implements IUserRegService {
 		Integer id = userRegRepository.save(userAccount).getId();
 		if (id != null) {
 			String subject = "Unlock Account";
-			String text = "<html><body> Hi, " + userAccount.getFirstName() + " " + userAccount.getLastName() + ": "
-					+ "<br><b>Welcome to KirArun Infotech Ltd.,</b> Your registeration is almost complete."
-					+ "<br>Please unlock your account using below details." + " <br><br>Your Temporary Password : " + password
-					+ "<br><a href='http://localhost:8080/unlockaccount/show'>Click here to unlock account</a></body></html>";
-
-			emailUtil.send(userAccount.getEmail(), text, subject);
+			String body = getUnlockAccEmailBody(userAccount,password);
+			emailUtil.send(userAccount.getEmail(), body, subject);
 		}
 		return id;
+	}
+
+	public String getUnlockAccEmailBody(UserAccount userAccount,String password) {
+		StringBuilder sb = new StringBuilder();
+		String body = "";
+		// load file
+		File f = new File("UnlockAcc-Email-Body.txt");
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(f));
+			//read line by line
+			String line = br.readLine();
+			while (line != null) {
+				sb.append(line);
+				line = br.readLine();
+			}
+			br.close();
+			body = sb.toString();
+			body = body.replace("{FNAME}", userAccount.getFirstName());
+			body = body.replace("{LNAME}", userAccount.getLastName());
+			body = body.replace("{TEMP-PWD}", password);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return body;
 	}
 
 	@Override
@@ -114,8 +137,9 @@ public class UserRegServiceImpl implements IUserRegService {
 		if (opt.isPresent()) {
 			System.out.println("opt.isPresent() : " + opt.isPresent());
 			if (pwd.equals(AES256.decrypt(opt.get().getPassword()))) {
-				System.out.println("pwd.equals(AES256.decrypt(opt.get().getPassword()) : "+ pwd.equals(AES256.decrypt(opt.get().getPassword())));
-				
+				System.out.println("pwd.equals(AES256.decrypt(opt.get().getPassword()) : "
+						+ pwd.equals(AES256.decrypt(opt.get().getPassword())));
+
 				if (opt.get().getAccStatus().equals("Unlocked")) {
 					System.out.println("VALID");
 					verify = "Valid";

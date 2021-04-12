@@ -1,0 +1,16 @@
+Hi {FNAME}, {LNAME}:
+<br/>
+
+Welcome to KirArun Infotech Ltd.,</b> Your registeration is almost complete.
+<br/>
+Please unlock your account using below details.
+<br/>
+Your Temporary Password : {TEMP-PWD}
+<br/>
+<br/>
+<a href='http://localhost:8080/unlockaccount/show'>Click here to unlock account</a>
+<br/>
+<br/>
+Thanks & Regards,
+<br/>
+KirArun Infotech Ltd, Nagpur.
