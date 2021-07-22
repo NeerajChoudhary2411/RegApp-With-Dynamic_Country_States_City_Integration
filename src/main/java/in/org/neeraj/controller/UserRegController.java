@@ -2,6 +2,8 @@ package in.org.neeraj.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,11 +23,15 @@ import in.org.neeraj.service.IUserRegService;
 @Controller
 @RequestMapping("/user")
 public class UserRegController {
+	
+	private Logger logger=LoggerFactory.getLogger(getClass());
+	
 	@Autowired
 	private IUserRegService iUserRegService;
 
 	@GetMapping("/signup")
 	public String registerUser(Model model) {
+		logger.info("Entered into UserRegController.reisterUser()");
 
 		model.addAttribute("countries", iUserRegService.getAllCountries());
 		return "RegisterUser";
